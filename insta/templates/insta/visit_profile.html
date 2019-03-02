@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{user.profilename}}
+{% endblock %}
+
+{% block content %}
+<header>
+	<div class="container">
+		<div class="header-wrap">
+			<div class="header-top d-flex justify-content-between align-items-center">
+				<div class="logo">
+					<h4><a href="{% url 'insta:profile' session_id %}"><img src="{{session_user.profile_image.url}}" width="40" height="40">@{{session_user.username}}</a></h4>
+				</div>
+				<div class="main-menubar d-flex align-items-center">
+					<nav class="hide">
+						<a href="{% url 'insta:feed' %}">Feed</a>
+						<a href="{% url 'insta:edit' %}">Edit Profile</a>
+						<a href="{% url 'insta:upload' %}">Post a picture</a>
+						<a href="{% url 'insta:follow' %}">Follow</a>						
+						<a href="{% url 'insta:logout' %}">Logout</a>
+					</nav>					
+					<div class="menu-bar"><span class="lnr lnr-menu"></span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<div class="container" style="padding: 100px;">
+	<div class="row" style="background-color: white; padding: 50px; box-shadow: 1px 1px 1px 1px;">
+		<div class="col-md-3">
+			<a href="{{user.profile_image.url}}"><img src="{{user.profile_image.url}}" width="150" height="150" class="img-responsive"></a>
+		</div>
+		<div class="col-md-6" style="color: black;">
+			<p style="font-size: 16px;line-height: 20px;font-weight: 200;">@{{user.username}}</p>
+
+			<p style="font-size: 32px;line-height:20px;font-weight: 400;">{{user.profile_name}}</p>
+
+			
+
+			<p style="display: inline;font-weight: 600;line-height: 40px;">{{user.profilename}}</p>
+
+			<p>{{user.bio}}</p>
+
+			<p>Followers  <span style=" font-weight: bold;">{{user.followers}}</span> &nbsp; &nbsp; &nbsp; Following  <span style="font-weight: bold;">{{user.following}}</span></p>
+			<form action="{% url 'insta:visit_profile' session_id user.uid %}" method='post'>{% csrf_token %}<br>
+      <input type="hidden" name="b_user" value="{{ u.username }}">
+      {% if like %}
+      <input type="submit" class ='btn btn-primary' name='operation' value={{message}}></form>
+      
+      {% else %}
+      <input type="submit" class = 'btn btn-tertiary' name='operation' value={{message}}></form>
+      {% endif %}
+
+		</div>
+
+		<div class="col-md-3">
+			<p style="color: black;"> <i class="fa fa-certificate fa-2x">&nbsp;{{post.post_score}} &nbsp;</i> <span style="font-weight: bold; font-size: 30px;">{{user.score}}</span>&nbsp; &nbsp; &nbsp; <span style=" font-weight: bold;">{{user.level}}</span></p>
+		</div>
+	</div>
+</div>
+
+
+{% if allPosts %}
+	<div class="container boxShade" style="padding: 100px; padding-top: 50px">
+		<div class="container gallery-container">
+			<div class="tz-gallery">
+				<div class="row mb-3" style="padding-bottom: 50px">
+					{% for post in allPosts %}
+						<div class="col-md-2 col-sm-2"></div>
+						<div class="col-md-8 col-sm-8">
+							<div class="card">
+								<p class="text-center" style="font-weight: bold">@{{post.uid.username}}  <br>  <strong>{{post.uid.profile_name}}</strong></p>
+								<a class="lightbox" href="../../../profile/{{session_id}}/{{post.post_id}}">
+								
+								<img src="{{post.post_image.url}}" alt="" class="card-img-top" height="350px">
+								<p class="text-center" style="color: black; font-weight: bold">{{post.post_caption}}</p>
+								<div class="container">
+									<div class="col-sm-4" style="padding-left: 200px;">
+							
+										<i class="fa fa-certificate fa-3x">&nbsp;{{post.post_score}} &nbsp;</i>
+										
+									</div>
+								</div>
+								</a>
+							</div>
+							<br>
+						</div>
+
+						<div class="col-md-2 col-sm-2"></div>
+						<hr>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% else %}
+	
+	<div class="container" style="padding-left: 100px;">
+		<div class="row">
+			<div class="col-md-11"  style="; background-color: #fff;">
+				&nbsp;
+				<h3>{{user.profile_name}} has not posted anything yet</h3><br>
+
+				<br>&nbsp;
+			</div>
+		</div>
+	</div>
+
+{% endif %}
+
+<script>
+    baguetteBox.run('.tz-gallery');
+</script>
+{% endblock %}

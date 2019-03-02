@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Edit your profile
+{% endblock %}
+
+{% block content %}
+<header>
+	<div class="container">
+		<div class="header-wrap">
+			<div class="header-top d-flex justify-content-between align-items-center">
+				<div class="logo">
+					<h4><a href="{% url 'insta:profile' session_id %}"><img src="{{session_user.profile_image.url}}" width="40" height="40">@{{user.username}}</a></h4>
+				</div>
+				<div class="main-menubar d-flex align-items-center">
+					<nav class="hide">
+						<a href="{% url 'insta:feed' %}">Feed</a>
+						<a href="{% url 'insta:edit' %}">Edit Profile</a>
+						<a href="{% url 'insta:upload' %}">Post a picture</a>
+						<a href="{% url 'insta:follow' %}">Follow</a>						
+						<a href="{% url 'insta:logout' %}">Logout</a>
+					</nav>					
+					<div class="menu-bar"><span class="lnr lnr-menu"></span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+
+<div class="container" style="padding: 100px;">
+	<div class="row" style="background-color: #fff; padding: 50px; box-shadow: 1px 1px 1px 1px;">
+		<div class="col-md-4">
+			<a href="{{user.profile_image.url}}"><img src="{{user.profile_image.url}}" width="200" height="200" class="img-responsive" ></a>
+		</div>
+		<div class="col-md-4">
+			<h4>Update profile photo</h4><br><hr>
+			<form action="{% url 'insta:edit_no_view' %}" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{form}}
+				<input type="hidden" name="edit" value="image"><br><br><br>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+			
+		</div>
+		<div class="col-md-4">
+			<h4>Update bio</h4><br><hr>
+			<h6>Current bio : {{user.bio}}</h6>
+			<form action="{% url 'insta:edit_no_view' %}" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{bform}}
+				<input type="hidden" name="edit" value="bio"><br><br><br>
+				<button type="submit" class="btn btn-primary">Submit</button>	
+			</form>
+		</div>
+		<div class="col-md-4">
+			<h4>Update profile name</h4><br><hr>
+			<h6>Current profile name : {{user.profile_name}}</h6>
+			<form action="{% url 'insta:edit_no_view' %}" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{pform}}
+				<input type="hidden" name="edit" value="profile_name"><br><br><br>
+				<button type="submit" class="btn btn-primary">Submit</button>	
+			</form>
+		</div>
+		<div class="col-md-4">
+		<form action="{% url 'insta:edit_no_view' %}" method="post" enctype="multipart/form-data">
+				{% csrf_token %}			
+				<input type="hidden" name="delete" value="{{session_id}}"><br><br><br>
+				<button type="submit" class="btn btn-primary" style="background-color: red;left: 90px;bottom:1px;position: absolute;">Delete account</button>	
+			</form></div>
+	</div>
+</div>
+{% endblock %}

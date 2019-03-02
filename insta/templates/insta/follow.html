@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+  Follow
+{% endblock %}
+
+{% block content %}
+
+<header>
+  <div class="container">
+    <div class="header-wrap">
+      <div class="header-top d-flex justify-content-between align-items-center">
+        <div class="logo">
+          <h4><a href="{% url 'insta:profile' session_id %}"><img src="{{session_user.profile_image.url}}" width="40" height="40">@{{user.username}}</a></h4>
+        </div>
+        <div class="main-menubar d-flex align-items-center">
+          <nav class="hide">
+            <a href="{% url 'insta:feed' %}">Feed</a>
+            <a href="{% url 'insta:edit' %}">Edit Profile</a>
+            <a href="{% url 'insta:upload' %}">Post a picture</a>
+            <a href="{% url 'insta:follow' %}">Follow</a>           
+            <a href="{% url 'insta:logout' %}">Logout</a>
+          </nav>          
+          <div class="menu-bar"><span class="lnr lnr-menu"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container" style="padding: 100px;">
+  
+<div class="row" style="background-color: #fff; padding: 50px; box-shadow: 1px 1px 1px 1px;">
+  
+  <form action="{% url 'insta:follow' %}" method='post'>{% csrf_token %}<h2>Search</h2><br>
+  <input type="text" name="search">
+  <input type="submit" value="Search"><br>
+  </form><br>
+   <div class="col-md-1"></div>
+  <div class="col-md-1"></div>    
+  <div class="col-md-5">
+  {% if message %}
+  <br><h2>{{message}}</h2>
+  {% endif %}
+ 
+  {% if search %}
+          <div style="position: relative;background-color: white;border-radius: 8px;height: 75px;">
+          <img src="../../../media/{{search.profile_image}}" height="60px" width="60px" style="padding-left: 10px;padding-top: 10px;position: absolute;padding-bottom: -10px;">
+            <form action="{% url 'insta:follow' %}" method='post'>{% csrf_token %}<br><a href="{% url 'insta:visit_profile' session_id search.uid%}" style="position: absolute;"><p style="padding-left: 80px;position: absolute;">@{{search.username}}</p><p style="padding-left: 80px;position: absolute;padding-top: 20px;">{{search.profile_name}}</p></a>
+            <input type="hidden" name="b_user" value="{{ search.username }}">
+            <input type="submit" class = "btn btn-secondary" name = 'operation' value="{{status}}" style="left: 220px;position: absolute;"></form></div>
+          {% endif %}</div></div>
+
+  <div class="row" style="background-color: #fff; padding: 50px; box-shadow: 1px 1px 1px 1px;">
+     
+      <div class="col-md-1"></div>
+        <div class="col-md-5">
+          <h2>Following</h2><br><br>
+          {% for u in ulist %}
+          <div style="position: relative;background-color: white;border-radius: 8px;height: 75px;">
+          <img src="../../../media/{{u.profile_image}}" height="60px" width="60px" style="padding-left: 10px;padding-top: 10px;position: absolute;padding-bottom: -10px;">
+            <form action="{% url 'insta:follow' %}" method='post'>{% csrf_token %}<br><a href="{% url 'insta:visit_profile' session_id u.uid%}" style="position: absolute;"><p style="padding-left: 80px;position: absolute;">@{{u.username}}</p><p style="padding-left: 80px;position: absolute;padding-top: 20px;">{{u.profile_name}}</p></a>
+            <input type="hidden" name="b_user" value="{{ u.username }}">
+            <input type="submit" class = "btn btn-tertiary" name = 'operation' value="Unfollow" style="left: 220px;position: absolute;"></form></div>
+          {% endfor %}
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+          <h2>Suggested Users</h2><br><br>
+
+          {% for u in full_list %}
+          <div style="position: relative;background-color: white;border-radius: 8px;height: 75px;">
+          <img src="../../../media/{{u.profile_image}}" height="60px" width="60px" style="padding-left: 10px;padding-top: 10px;position: absolute;padding-bottom: -10px;">
+            <form action="{% url 'insta:follow' %}" method='post'>{% csrf_token %}<br><a href="{% url 'insta:visit_profile' session_id u.uid%}" style="position: absolute;"><p style="padding-left: 80px;position: absolute;">@{{u.username}}</p><p style="padding-left: 80px;position: absolute;padding-top: 20px;">{{u.profile_name}}</p></a>
+            <input type="hidden" name="b_user" value="{{ u.username }}">
+            <input type="submit" class = "btn btn-primary" name = 'operation' value="Follow" style="left: 220px;position: absolute;"></form></div>
+          {% endfor %}
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}

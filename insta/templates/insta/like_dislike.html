@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{{user.profilename}}
+{% endblock %}
+
+{% block content %}
+<header>
+	<div class="container">
+		<div class="header-wrap">
+			<div class="header-top d-flex justify-content-between align-items-center">
+				<div class="logo">
+					<h4><a href="{% url 'insta:profile' session_id %}"><img src="{{session_user.profile_image.url}}" width="40" height="40">@{{user.username}}</a></h4>
+				</div>
+				<div class="main-menubar d-flex align-items-center">
+					<nav class="hide">
+						<a href="{% url 'insta:feed' %}">Feed</a>
+						<a href="{% url 'insta:edit' %}">Edit Profile</a>
+						<a href="{% url 'insta:upload' %}">Post a picture</a>
+						<a href="{% url 'insta:follow' %}">Follow</a>						
+						<a href="{% url 'insta:logout' %}">Logout</a>
+					</nav>					
+					<div class="menu-bar"><span class="lnr lnr-menu"></span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+
+	<br><br><br>&nbsp;
+	<div class="container" style="; background-color: #fff; padding: 20px; padding-left: 40px; padding-right: 40px;">
+		<div class="row">
+
+			<div class="col-sm-8" style="padding: 20px; ">
+				<h3>Posted by <a href="{% url 'insta:visit_profile' session_id post.uid.uid%}">@{{post.uid}}</a></h3><br>
+				
+				<div class="container" style="padding-left: 20px" style="position: relative;">
+					<form action="{% url 'insta:like_dislike' session_id pid %}" method='post' style="position:absolute;top:50%;">{% csrf_token %}
+					{% if like %}
+					<button class="btn btn-primary" type="submit" name="operation" value="like"><i class="fa fa-thumbs-up fa-3x" id="hover" ></i></a></button>
+					{% else %}
+					<button  class='btn btn-secondary' type="submit" name="operation" value="like"><i class="fa fa-thumbs-up fa-3x" id="hover"></i></a></button>
+					{% endif %}
+					<h1 style="color: grey;">&nbsp;{{post.post_score}} &nbsp;</h1>
+					{% if dislike %}
+					<button class="btn btn-primary" type="submit" name="operation" value="dislike"><i class="fa fa-thumbs-down fa-3x" id="hover" style="color: red;position: relative;"></i></a></button>
+					{% else %}
+					<button class='btn btn-secondary' type="submit" name="operation" value="dislike"><i class="fa fa-thumbs-down fa-3x" id="hover" style="color: red"></i></a></button>
+					{% endif %}
+					</form>
+				</div>
+				<img src="../../../media\{{post.post_image}}" width="500" style="margin: 0 auto;display: block;position:relative">
+				<br>&nbsp;
+				<h4 style="padding-left: 25px;">{{post.post_caption}}</h4>
+			{% if owner %}
+			<form action="{% url 'insta:like_dislike' session_id pid %}" method='post'>{% csrf_token %}
+				<br><button class="btn btn-primary" type="submit" style="left: 40px;position: absolute;background-color: red;">Delete</button>
+				<input type="hidden" name="delete" value="{{pid}}"><br>&nbsp;
+				</form>
+			{% endif %}
+			</div>
+
+			<div class="col-sm-4" style="border: solid 1px black; ">
+				<h3 class="text-center">Comments</h3>
+				<br>
+				
+
+				<div class="container" style="box-shadow: 2px 2px 2px 2px; overflow-y: scroll; height: 300px">
+				{% for i in clist %}
+				
+					<a href="{% url 'insta:visit_profile' session_id post.uid.uid%}" style="color: red">@{{i.c_uid.username}}</a>
+					<p style="color: #3e6bfd;">{{i.comment_text}}</p>					
+					<br><hr>						
+				{% endfor %}
+				</div>
+
+				<br>
+				 <form action="{% url 'insta:like_dislike' session_id pid %}" method='post'>{% csrf_token %}
+				<textarea placeholder="  Post your comment here" name = "comment" cols="26" rows="5"></textarea>
+				<button class="btn btn-primary" type="submit">Submit</button><br>&nbsp;
+				</form>
+
+			</div>
+		</div>
+					
+				
+			
+	
+	</div>
+{% endblock %}

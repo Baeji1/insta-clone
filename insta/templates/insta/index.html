@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Instagram{% endblock %}
+
+
+{% block content %}
+	<div class="main-wrapper-first">
+		<div class="hero-area relative">
+			<div class="banner-area">
+				<div class="container">
+					<div class="row height align-items-center">
+						<div class="col-lg-7">
+							<div class="banner-content">
+								<h1 class="text-white text-uppercase mb-10">Welcome to {Instagram}</h1>
+								<p class="text-white mb-30">Post, Like, Comment, Score and get yourself to higher levels</p>
+								<a href="{% url 'insta:login' %}" class="primary-btn d-inline-flex align-items-center"><span class="mr-10">Login</span><span class="lnr lnr-arrow-right"></span></a><br><br>
+								<a href="{% url 'insta:signup' %}" class="primary-btn d-inline-flex align-items-center"><span class="mr-10">Signup</span><span class="lnr lnr-arrow-right"></span></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+</body>

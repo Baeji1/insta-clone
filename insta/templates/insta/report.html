@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Edit your profile
+{% endblock %}
+
+{% block content %}
+
+
+
+ <div class="row" style="background-color: #fff; padding: 50px; box-shadow: 1px 1px 1px 1px;">
+     
+      <div class="col-md-1"></div>
+        <div class="col-md-5">
+          <h2>Top users (posts)</h2><br><br>
+          {% for u in allUsers %}
+          <div style="position: relative;background-color: white;border-radius: 8px;height: 75px;">
+          <img src="../../../media/{{u.profile_image}}" height="60px" width="60px" style="padding-left: 10px;padding-top: 10px;position: absolute;padding-bottom: -10px;">
+            <p style="padding-left: 80px;position: absolute;">@{{u.username}}</p><p style="padding-left: 80px;position: absolute;padding-top: 20px;">{{u.profile_name}}</p><h5 style="padding-left: 200px">{{u.count}}</h5>
+           </div>
+          {% endfor %}
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+          <h2>Top users (likes)</h2><br><br>
+
+          {% for u in y %}
+          <div style="position: relative;background-color: white;border-radius: 8px;height: 75px;">
+          <img src="../../../media/{{u.profile_image}}" height="60px" width="60px" style="padding-left: 10px;padding-top: 10px;position: absolute;padding-bottom: -10px;">
+           <br><p style="padding-left: 80px;position: absolute;">@{{u.username}}</p><p style="padding-left: 80px;position: absolute;padding-top: 20px;">{{u.profile_name}}</p><h5 style="padding-left: 200px">{{u.likes}}</h5>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

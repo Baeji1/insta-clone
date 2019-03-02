@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+
+<div class="container">
+	<br>
+  <div class="row justify-content-center">
+    <div class="col-4" style="background-color: #fff;">
+    	<br><br>
+      <h1 class="mt-2">Sign up</h1>
+      {% if error %}
+        <h5>{{error}}</h5>
+      {% else %}
+        <h5>You can create your account here</h5>
+      {% endif %}
+      <hr class="mt-0 mb-4">
+      <form method="post" action="{% url 'insta:signup' %}">
+	    {% csrf_token %}
+	    {{ form|crispy }}
+        <br><br>
+                <div class="col-md-3">
+                    <label for="psw-repeat"><b>Repeat Password</b></label>
+                </div>
+                <div class="col-md-9">
+                    <input type="password" placeholder="Password Confirmation" name="psw-repeat" size="50" style="color: black;" required>
+                    </div>
+                <br>    
+	    <br><button type="submit" class="btn btn-primary">Submit</button>
+	  </form>
+	  <br>
+    </div>
+  </div>
+</div>
+{% endblock %}

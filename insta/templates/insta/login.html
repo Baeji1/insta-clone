@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+<div class="container">
+	<br>
+  <div class="row justify-content-center">
+    <div class="col-4" style="background-color: #fff;">
+    	<br><br>
+      <h1 class="mt-2">Login</h1>
+      {% if error %}
+        <h5>{{error}}</h5>
+      {% else %}
+        <h5>Enter your details to login</h5>
+      {% endif %}
+      <hr class="mt-0 mb-4">
+      <form method="post" action="{% url 'insta:login' %}">
+{% csrf_token %}
+{{form|crispy}}<br>
+
+<input type="submit" value="Login">
+
+</form>
+	  <br>
+    </div>
+  </div>
+</div>
+{% endblock %}

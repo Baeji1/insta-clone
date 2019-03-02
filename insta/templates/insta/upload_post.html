@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title%}
+  UploadPost
+{% endblock %}
+
+{% block content %}
+<header>
+  <div class="container">
+    <div class="header-wrap">
+      <div class="header-top d-flex justify-content-between align-items-center">
+        <div class="logo">
+          <h4><a href="{% url 'insta:profile' session_id %}"><img src="{{session_user.profile_image.url}}" width="40" height="40">@{{user.username}}</a></h4>
+        </div>
+        <div class="main-menubar d-flex align-items-center">
+          <nav class="hide">
+            <a href="{% url 'insta:feed' %}">Feed</a>
+            <a href="{% url 'insta:edit' %}">Edit Profile</a>
+            <a href="{% url 'insta:upload' %}">Post a picture</a>
+            <a href="{% url 'insta:follow' %}">Follow</a>           
+            <a href="{% url 'insta:logout' %}">Logout</a>
+          </nav>          
+          <div class="menu-bar"><span class="lnr lnr-menu"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container" style="padding: 100px;">
+  <div class="row" style="background-color: #fff; padding: 50px; box-shadow: 1px 1px 1px 1px;">
+    <div class="col-md-2">
+      <h3>Upload a post</h3><br>
+    </div>
+    <div class="col-md-9">
+      <form method="post" action="{% url 'insta:upload_no_view' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{form|crispy}}         
+      <input type="hidden" name="uid" value="{{user.uid}}">
+      <br><br>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+    
+  </div>
+</div>
+{% endblock %}
